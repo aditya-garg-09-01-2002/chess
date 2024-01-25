@@ -152,3 +152,48 @@ function getPossibleMovesQueen(index,board)
 {
     return getPossibleMovesBishop(index,board).concat(getPossibleMovesRook(index,board));
 }
+
+function getPossibleMovesKing(index,board)
+{
+    let row=Math.floor(index/8)
+    let col=Math.floor(index%8)
+    const moves=[];
+
+    if(row>0)
+    {
+        if(board[(row-1)*8+col].isOccupied===false||board[(row-1)*8+col].color==="black")
+            moves.push((row-1)*8+col);
+        if(col>0)
+            if(board[(row-1)*8+col-1].isOccupied===false||board[(row-1)*8+col-1].color==="black")
+                moves.push((row-1)*8+col-1);
+        if(col<7)
+            if(board[(row-1)*8+col+1].isOccupied===false||board[(row-1)*8+col+1].color==="black")
+                moves.push((row-1)*8+col+1);
+    }
+    if(row<7)
+    {
+        if(board[(row+1)*8+col].isOccupied===false||board[(row+1)*8+col].color==="black")
+            moves.push((row+1)*8+col);
+        if(col>0)
+            if(board[(row+1)*8+col-1].isOccupied===false||board[(row+1)*8+col-1].color==="black")
+                moves.push((row+1)*8+col-1);
+        if(col<7)
+            if(board[(row+1)*8+col+1].isOccupied===false||board[(row+1)*8+col+1].color==="black")
+                moves.push((row+1)*8+col+1);
+    }
+    if(col>0)
+        if(board[row*8+col-1].isOccupied===false||board[row*8+col-1].color==="black")
+            moves.push(row*8+col-1);
+    if(col<7)
+        if(board[row*8+col+1].isOccupied===false||board[row*8+col+1].color==="black")
+            moves.push(row*8+col+1);
+    
+    //castling
+    if(board[index].moved===false)
+    {
+        
+    }
+
+    return moves;
+
+}

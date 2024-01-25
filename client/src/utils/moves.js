@@ -1,4 +1,27 @@
 
+function moveFromTo({from,to,target,deselect,setBoard})
+{
+    if(target.canMoveTo)
+    {
+        setBoard((oldBoard)=>{
+            const board=[...oldBoard]
+            let row=Math.floor(from/8);
+            let piece=board[from].piece;
+            board[to].piece=piece
+            board[to].isOccupied=board[from].isOccupied
+            board[to].color=board[from].color
+            board[to].moved=true;
+            board[from].color=null
+            board[from].isOccupied=false;
+            board[from].piece=null
+            deselect()
+            return board
+        })
+        return true;
+    }
+    else return false;
+}
+
 
 function promotePawnTo(piece,index,setBoard){
     setBoard(oldBoard=>{

@@ -29,3 +29,16 @@ const initialSetting = ()=>{
     }
     return board
 }
+
+
+const tileSetting=(state,Tile,tilesRef,selectInd,moveTo,isMyChance)=>{
+    const tiles=[]
+    state.forEach((statei,index)=>{
+        tiles.push(
+            <Tile isMyChance={isMyChance} ref={tilesRef[index]} select={selectInd} index={index} key={index} isSelected={false} isOccupied={statei.isOccupied} isEven={(Math.floor(index/8)+index%8)%2===1?true:false} piece={statei.piece} color={statei.color} moveTo={moveTo} />
+        )
+    })
+    return tiles;
+}
+
+export {initialSetting,tileSetting}

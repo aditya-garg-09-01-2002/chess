@@ -252,3 +252,5 @@ function getPossibleMoves(piece,index,board)
         return getPossibleMovesKing(index,board);
         
 }
+
+export {getPossibleMoves,moveFromTo,promotePawnTo}

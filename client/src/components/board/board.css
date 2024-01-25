@@ -1,0 +1,37 @@
+#board{
+    height:100%;
+    aspect-ratio: 1/1;
+    background-color:rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    border:black solid 10px;
+    flex-wrap: wrap;
+    display: flex;
+
+}
+.tile{
+    height:12.5%;
+    width:12.5%;
+    box-sizing: border-box;
+    padding:10px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+}
+
+.tile-hovered{
+    border:black solid 2px;
+}
+
+.tile-selected{
+    border:black solid 4px;
+}
+
+.pieces{
+    height:calc(100% - 10px);
+    width:calc(100% - 10px);
+}
+
+.piece-hovered{
+    filter:drop-shadow(2px 2px 0 black)
+}

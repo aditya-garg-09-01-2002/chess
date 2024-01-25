@@ -1,3 +1,13 @@
+
+
+function promotePawnTo(piece,index,setBoard){
+    setBoard(oldBoard=>{
+        const newBoard=[...oldBoard];
+        newBoard[index].piece=piece;
+        return newBoard;
+    })
+}
+
 function getPossibleMovesPawn(index,board)
 {
     let row=Math.floor(index/8);

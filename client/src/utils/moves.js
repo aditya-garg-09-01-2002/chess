@@ -197,3 +197,25 @@ function getPossibleMovesKing(index,board)
     return moves;
 
 }
+
+function getPossibleMoves(piece,index,board)
+{
+    if(piece==="pawn")
+        return getPossibleMovesPawn(index,board)
+    
+    else if(piece==="knight")
+        return getPossibleMovesKnight(index,board)
+    
+    else if(piece==="rook")
+        return getPossibleMovesRook(index,board)
+    
+    else if(piece==="bishop")
+        return getPossibleMovesBishop(index,board)
+
+    else if(piece==="queen")
+        return getPossibleMovesQueen(index,board);
+
+    else if(piece==="king")
+        return getPossibleMovesKing(index,board);
+        
+}

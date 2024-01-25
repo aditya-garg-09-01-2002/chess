@@ -105,3 +105,45 @@ function getPossibleMovesKnight(index,board){
         }
     return moves;
 }
+
+function getPossibleMovesBishop(index,board)
+{
+    let row=Math.floor(index/8)
+    let col=index%8;
+    const moves=[];
+    for(let k=0;k<4;k++)
+        for(let i=1,j=1;i<8;i++,j++)
+        {
+            if(k===1)
+                i*=-1;
+            else if(k===2)
+                j*=-1;
+            else if(k===3)
+            {
+                i*=-1;
+                j*=-1;
+            }
+            if(row+i>-1&&row+i<8&&col+j<8&&col+j>-1)
+            {
+                const cell=board[(row+i)*8+(col+j)];
+                if(cell.isOccupied)
+                {
+                    if(cell.color==="black")
+                        moves.push((row+i)*8+j+col)
+                    break;
+                }
+                moves.push((row+i)*8+col+j);
+            }
+            else break;
+            if(k===1)
+                i*=-1;
+            else if(k===2)
+                j*=-1;
+            else if(k===3)
+            {
+                i*=-1;
+                j*=-1;
+            }
+        }
+    return moves;
+}

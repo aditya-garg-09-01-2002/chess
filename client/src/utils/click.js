@@ -40,13 +40,3 @@ function select(index,TilesRef,board){
     else 
         return []
 }
-function deselect(TilesRef,otherSelected,board)
-{
-    otherSelected.forEach((ind)=>{
-        board[ind].canMoveTo=false;
-        TilesRef[ind].current.classList.remove('tile-selected')
-    });
-    return board;
-}
-
-export {select,deselect}

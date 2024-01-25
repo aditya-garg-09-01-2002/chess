@@ -147,3 +147,8 @@ function getPossibleMovesBishop(index,board)
         }
     return moves;
 }
+
+function getPossibleMovesQueen(index,board)
+{
+    return getPossibleMovesBishop(index,board).concat(getPossibleMovesRook(index,board));
+}

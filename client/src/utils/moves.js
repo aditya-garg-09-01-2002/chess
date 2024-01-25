@@ -73,3 +73,35 @@ function getPossibleMovesRook(index,board)
     }
     return moves
 }
+
+function getPossibleMovesKnight(index,board){
+    let row=Math.floor(index/8)
+    let col=index%8;
+    const moves=[];
+    for(let i=1;i<=2;i++)
+        for(let j=1;j<=2;j++)
+        {
+            if(i+j===3)
+            {
+                if(row+i<8)
+                {
+                    if(col+j<8)
+                        if(board[(row+i)*8+col+j].color!="white")
+                        moves.push((row+i)*8+col+j);
+                    if(col-j>-1)
+                        if(board[(row+i)*8+col-j].color!="white")
+                        moves.push((row+i)*8+col-j);
+                }
+                if(row-i>-1)
+                {
+                    if(col+j<8)
+                        if(board[(row-i)*8+col+j].color!="white")
+                        moves.push((row-i)*8+col+j);
+                    if(col-j>-1)
+                        if(board[(row-i)*8+col-j].color!="white")
+                        moves.push((row-i)*8+col-j)
+                }
+            }
+        }
+    return moves;
+}

@@ -24,5 +24,12 @@ io.on('connection',socket=>{
         else 
             socket.emit('your-chance-false')
     })
+    socket.on('have-moved',({from,to,piece})=>{
+        players[socket.id].isChance=false;
+        const otherPlayerID=Object.keys(players).find(id=>id!==socket.id);
+        players[otherPlayerID].isChance=true;
+        // Converting index from my perspective to opponent perspective
+        io.to(otherPlayerID).emit('opponent-move',{to:64-to,from:64-from,piece})
+    })
     socket.on('disconnect',()=>delete players[socket.id])
 })

@@ -3,7 +3,7 @@ import "./board.css"
 import {Tile} from "./tile"
 import { initialSetting,tileSetting } from "../../utils/setting";
 import {select,deselect} from "../../utils/click"
-import { moveFromTo, moveOpponent } from "../../utils/moves";
+import { moveFromTo, moveOpponent, promotePawnTo } from "../../utils/moves";
 import PawnPromotionPrompt from "./prompt";
 import io from "socket.io-client"
 
@@ -40,12 +40,15 @@ export default function Board(){
         socketRef.current.emit('have-moved',{from:origin,to:index,piece:state[index].piece})
         if(Math.floor(index/8)===0&&state[index].piece==="pawn")
         {
-            socketRef.current.emit('promote-pawn',{index:index,piece:state[index].piece})
             setIndex(index);
             setPrompt(true)
         }
         //rest processing will happening from prompt itself
         return true;
+    }
+
+    function emitPromotionMessage(index,piece){
+        socketRef.current.emit('promote-pawn',{index:index,piece:piece})
     }
 
     function selectInd(index){
@@ -67,6 +70,10 @@ export default function Board(){
         socketRef.current.on('opponent-move',({from,to,piece})=>{
             moveOpponent({from,to,piece,setBoard:setState})
         })
+        socketRef.current.on('pawn-promotion',({index,piece})=>{
+            console.log(piece,index)
+            promotePawnTo(piece,index,setState)
+        })
         return (()=>{
             socketRef.current.disconnect();
         })
@@ -79,7 +86,7 @@ export default function Board(){
         <>
             <div id="board">
                 {tiles}
-                <PawnPromotionPrompt isOpen={askPawnPromotionPrompt} setPrompt={setPrompt} index={pawnPromotionIndex} setBoard={setState} />
+                <PawnPromotionPrompt isOpen={askPawnPromotionPrompt} setPrompt={setPrompt} index={pawnPromotionIndex} setBoard={setState}  emitPromotionMessage={emitPromotionMessage}/>
             </div>
         </>
     )

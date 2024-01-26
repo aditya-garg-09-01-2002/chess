@@ -3,7 +3,7 @@ import "./board.css"
 import {Tile} from "./tile"
 import { initialSetting,tileSetting } from "../../utils/setting";
 import {select,deselect} from "../../utils/click"
-import { moveFromTo } from "../../utils/moves";
+import { moveFromTo, moveOpponent } from "../../utils/moves";
 import PawnPromotionPrompt from "./prompt";
 import io from "socket.io-client"
 
@@ -64,7 +64,9 @@ export default function Board(){
     useEffect(()=>{
         setState(initialSetting())
         socketRef.current=io('http://localhost:9000/')
-        console.log(socketRef)
+        socketRef.current.on('opponent-move',({from,to,piece})=>{
+            moveOpponent({from,to,piece,setBoard:setState})
+        })
         return (()=>{
             socketRef.current.disconnect();
         })

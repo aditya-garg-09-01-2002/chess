@@ -5,11 +5,10 @@ function moveFromTo({from,to,target,deselect,setBoard})
     {
         setBoard((oldBoard)=>{
             const board=[...oldBoard]
-            let row=Math.floor(from/8);
             let piece=board[from].piece;
             board[to].piece=piece
-            board[to].isOccupied=board[from].isOccupied
-            board[to].color=board[from].color
+            board[to].isOccupied=true
+            board[to].color="white"
             board[to].moved=true;
             board[from].color=null
             board[from].isOccupied=false;
@@ -20,6 +19,22 @@ function moveFromTo({from,to,target,deselect,setBoard})
         return true;
     }
     else return false;
+}
+
+function moveOpponent({from,to,piece,setBoard})
+{
+    setBoard((oldBoard)=>{
+        const board=[...oldBoard]
+        board[to].piece=piece
+        board[to].isOccupied=true
+        board[to].color="black"
+        board[to].moved=true;
+        board[from].color=null
+        board[from].isOccupied=false;
+        board[from].piece=null
+        return board
+    })
+    return true;
 }
 
 
@@ -253,4 +268,4 @@ function getPossibleMoves(piece,index,board)
         
 }
 
-export {getPossibleMoves,moveFromTo,promotePawnTo}
+export {getPossibleMoves,moveFromTo,promotePawnTo,moveOpponent}

@@ -29,7 +29,11 @@ io.on('connection',socket=>{
         const otherPlayerID=Object.keys(players).find(id=>id!==socket.id);
         players[otherPlayerID].isChance=true;
         // Converting index from my perspective to opponent perspective
-        io.to(otherPlayerID).emit('opponent-move',{to:64-to,from:64-from,piece})
+        io.to(otherPlayerID).emit('opponent-move',{to:56-to+2*(to%8),from:56-from+2*(from%8),piece})
+    })
+    socket.on('promote-pawn',({index,piece})=>{
+        const otherPlayerID=Object.keys(players).find(id=>id!==socket.id);
+        io.to(otherPlayerID).emit('pawn-promotion',{index:56-index+2*(index%8),piece})
     })
     socket.on('disconnect',()=>delete players[socket.id])
 })

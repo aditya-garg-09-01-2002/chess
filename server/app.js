@@ -13,5 +13,9 @@ const io=socketIO(server,{cors:{}})
 let players={},audience=[];
 
 io.on('connection',socket=>{
+    if(Object.keys(players).length<2)
+        players[socket.id]={isChance:Object.keys(players).length===0}
+    else 
+        audience.push(socket.id)
     socket.on('disconnect',()=>delete players[socket.id])
 })

@@ -6,14 +6,17 @@ import {select,deselect} from "../../utils/click"
 import { moveFromTo, moveOpponent, promotePawnTo } from "../../utils/moves";
 import PawnPromotionPrompt from "./prompt";
 import io from "socket.io-client"
+import { inCheck,inCheckMate } from "../../utils/check";
 
 export default function Board(){
     const [askPawnPromotionPrompt, setPrompt] = useState(false);
     const [pawnPromotionIndex,setIndex]=useState(null);
-    const [state,setState]=useState();
+    const intialState=initialSetting()
+    const [state,setState]=useState(intialState);
     const tilesRef=Array.from({length:64},()=>React.createRef())
     const [tiles,setTiles]=useState();
     const socketRef=useRef(null)
+    let kingPosition=60;
     let otherSelected=[]
     
     async function isMyChance(){
@@ -37,6 +40,8 @@ export default function Board(){
         let moved=moveFromTo({from:origin,to:index,target:state[index],deselect:deselectInd,setBoard:setState})
         if(moved===false)
             return false;
+        if(state[index].piece==="king")
+            kingPosition=index;
         socketRef.current.emit('have-moved',{from:origin,to:index,piece:state[index].piece})
         if(Math.floor(index/8)===0&&state[index].piece==="pawn")
         {
@@ -65,13 +70,16 @@ export default function Board(){
     }
 
     useEffect(()=>{
-        setState(initialSetting())
+        // setState(initialSetting())
         socketRef.current=io('http://localhost:9000/')
         socketRef.current.on('opponent-move',({from,to,piece})=>{
+            if(inCheck({index:kingPosition,board:state,piece,to}))
+            {
+                console.log("currently in check")
+            }
             moveOpponent({from,to,piece,setBoard:setState})
         })
         socketRef.current.on('pawn-promotion',({index,piece})=>{
-            console.log(piece,index)
             promotePawnTo(piece,index,setState)
         })
         return (()=>{

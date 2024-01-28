@@ -7,6 +7,7 @@ import { moveFromTo, moveOpponent, promotePawnTo } from "../../utils/moves";
 import PawnPromotionPrompt from "./prompt";
 import io from "socket.io-client"
 import { inCheck,inCheckMate } from "../../utils/check";
+import { checkKingSideCastling, checkQueenSideCastling } from "../../utils/castling";
 
 export default function Board(){
     const [askPawnPromotionPrompt, setPrompt] = useState(false);
@@ -16,7 +17,9 @@ export default function Board(){
     const tilesRef=Array.from({length:64},()=>React.createRef())
     const [tiles,setTiles]=useState();
     const socketRef=useRef(null)
+    const [isChance,setChance]=useState(false)
     let kingPosition=60;
+    let kingSideCastling=false,queenSideCastling=false;
     let otherSelected=[]
     
     async function isMyChance(){
@@ -70,14 +73,19 @@ export default function Board(){
     }
 
     useEffect(()=>{
-        // setState(initialSetting())
         socketRef.current=io('http://localhost:9000/')
+        socketRef.current.emit('mychance')
         socketRef.current.on('opponent-move',({from,to,piece})=>{
             if(inCheck({index:kingPosition,board:state,piece,to}))
             {
                 console.log("currently in check")
+                inCheckMate({index:kingPosition,board:state,piece,to})
             }
             moveOpponent({from,to,piece,setBoard:setState})
+        })
+        socketRef.current.on('you-start',()=>
+        {
+            setChance(true)
         })
         socketRef.current.on('pawn-promotion',({index,piece})=>{
             promotePawnTo(piece,index,setState)
@@ -92,6 +100,9 @@ export default function Board(){
     },[state])
     return (
         <>
+        Kingside Castling {kingSideCastling===true?"yes":"no"}<br/>
+        Queenside Castling {queenSideCastling===true?"yes":"no"}<br/>
+        Chance {isChance===true?"yes":"no"}
             <div id="board">
                 {tiles}
                 <PawnPromotionPrompt isOpen={askPawnPromotionPrompt} setPrompt={setPrompt} index={pawnPromotionIndex} setBoard={setState}  emitPromotionMessage={emitPromotionMessage}/>

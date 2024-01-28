@@ -14,12 +14,17 @@ let players={},audience=[];
 
 io.on('connection',socket=>{
     if(Object.keys(players).length<2)
+    {
         players[socket.id]={isChance:Object.keys(players).length===0}
+        if(players[socket.id].isChance===true)
+            socket.emit('you-start')
+    }
     else 
         audience.push(socket.id)
     socket.on('mychance',()=>{
-        console.log(socket.id,players[socket.id].isChance)
-        if(players[socket.id].isChance)
+        if(typeof(players[socket.id])==='undefined')
+            socket.emit('your-chance-false')
+        else if(players[socket.id].isChance)
             socket.emit('your-chance-true')
         else 
             socket.emit('your-chance-false')
@@ -35,5 +40,16 @@ io.on('connection',socket=>{
         const otherPlayerID=Object.keys(players).find(id=>id!==socket.id);
         io.to(otherPlayerID).emit('pawn-promotion',{index:56-index+2*(index%8),piece})
     })
-    socket.on('disconnect',()=>delete players[socket.id])
+    socket.on('disconnect',()=>{
+        try{
+            const otherPlayerID=Object.keys(players).find(id=>id!==socket.id);
+            players[otherPlayerID].isChance=true;
+            socket.to(otherPlayerID).emit('you-start')
+        }
+        catch(error)
+        {
+            console.log('other player left as well')
+        }
+        delete players[socket.id]
+    })
 })

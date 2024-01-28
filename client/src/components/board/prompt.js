@@ -2,9 +2,10 @@ import React from 'react';
 import './prompt.css';
 import { promotePawnTo } from '../../utils/moves';
 import {Queen,Knight,Bishop,Rook} from "./pieces"
-export default function PawnPromotionPrompt({ isOpen, setPrompt,index,setBoard }){
+export default function PawnPromotionPrompt({ isOpen, setPrompt,index,setBoard,emitPromotionMessage }){
   function pawnPromotion(piece){
     promotePawnTo(piece,index,setBoard);
+    emitPromotionMessage(index,piece)
     setPrompt(false)
   }
 

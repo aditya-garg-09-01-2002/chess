@@ -1,5 +1,3 @@
-import { getPossibleMovesKing } from "./moves";
-
 function inCheck({index,board,to,piece})
 {
     if(typeof(to)!=='undefined')
@@ -9,18 +7,16 @@ function inCheck({index,board,to,piece})
         board[to].piece=piece;
     }
     if(Math.floor(index/8)!=0)
-    {
         if(inCheckByPawn({index,board}))
-            return true;
-        if(inCheckByRook({index,board}))
-            return true;
-        if(inCheckByKnight({index,board}))
-            return true;
-        if(inCheckByBishop({index,board}))
-            return true;
-        if(inCheckByQueen({index,board}))
-            return true;
-    }
+            return true;    
+    if(inCheckByRook({index,board}))
+        return true;
+    if(inCheckByKnight({index,board}))
+        return true;
+    if(inCheckByBishop({index,board}))
+        return true;
+    if(inCheckByQueen({index,board}))
+        return true;
     return false;
 }
 function inCheckByPawn({index,board})
@@ -166,18 +162,4 @@ function inCheckByQueen({index,board})
 {
     return (inCheckByBishop({index,board})||inCheckByRook({index,board}))
 }
-function inCheckMate({index,board,to,piece})
-{
-    if(typeof(to)!=='undefined')
-    {
-        board[to].isOccupied=true;
-        board[to].color="black";
-        board[to].piece=piece;
-    }
-    const possibleMoves=getPossibleMovesKing(index,board);
-    for(let i=0;i<possibleMoves.length;i++)
-        if(inCheck({index:possibleMoves[i],board,to,piece})===false)
-            return false;
-    return true;
-}
-export {inCheck,inCheckMate}
+export {inCheck}

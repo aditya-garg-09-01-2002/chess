@@ -265,4 +265,4 @@ function getPossibleMoves(piece,index,board)
         
 }
 
-export {getPossibleMoves,moveFromTo,promotePawnTo,moveOpponent}
+export {getPossibleMoves,moveFromTo,promotePawnTo,moveOpponent,getPossibleMovesKing}

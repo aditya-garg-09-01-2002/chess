@@ -6,10 +6,10 @@ import {select,deselect} from "../../utils/click"
 import { moveFromTo, moveOpponent, promotePawnTo } from "../../utils/moves";
 import PawnPromotionPrompt from "./prompt";
 import io from "socket.io-client"
-import { inCheck,inCheckMate } from "../../utils/check";
+import { inCheck} from "../../utils/check";
 import { checkKingSideCastling, checkQueenSideCastling } from "../../utils/castling";
 
-export default function Board(){
+export default function Board({setCheck,setCheckMate,setChance}){
     const [askPawnPromotionPrompt, setPrompt] = useState(false);
     const [pawnPromotionIndex,setIndex]=useState(null);
     const intialState=initialSetting()
@@ -17,7 +17,6 @@ export default function Board(){
     const tilesRef=Array.from({length:64},()=>React.createRef())
     const [tiles,setTiles]=useState();
     const socketRef=useRef(null)
-    const [isChance,setChance]=useState(false)
     let kingPosition=60;
     let kingSideCastling=false,queenSideCastling=false;
     let otherSelected=[]
@@ -44,13 +43,20 @@ export default function Board(){
         if(moved===false)
             return false;
         if(state[index].piece==="king")
-            kingPosition=index;
+            kingPosition=index; 
         socketRef.current.emit('have-moved',{from:origin,to:index,piece:state[index].piece})
         if(Math.floor(index/8)===0&&state[index].piece==="pawn")
         {
             setIndex(index);
             setPrompt(true)
         }
+        socketRef.current.on('check-status',()=>{
+            if(inCheck({index:kingPosition,board:state}))
+                setCheck(true)
+            else 
+                setCheck(false)
+        })
+        setChance(false)
         //rest processing will happening from prompt itself
         return true;
     }
@@ -76,15 +82,16 @@ export default function Board(){
         socketRef.current=io('http://localhost:9000/')
         socketRef.current.emit('mychance')
         socketRef.current.on('opponent-move',({from,to,piece})=>{
-            if(inCheck({index:kingPosition,board:state,piece,to}))
-            {
-                console.log("currently in check")
-                inCheckMate({index:kingPosition,board:state,piece,to})
-            }
+            setChance(true)
+            if(state[to].piece==="king"&&state[to].isOccupied===true&&state[to].color==="white")
+                setCheckMate(true)
+            if(inCheck({index:kingPosition,board:state,piece,to,from}))
+                setCheck(true)
+            else
+                setCheck(false)
             moveOpponent({from,to,piece,setBoard:setState})
         })
-        socketRef.current.on('you-start',()=>
-        {
+        socketRef.current.on('you-start',()=>{
             setChance(true)
         })
         socketRef.current.on('pawn-promotion',({index,piece})=>{
@@ -100,9 +107,6 @@ export default function Board(){
     },[state])
     return (
         <>
-        Kingside Castling {kingSideCastling===true?"yes":"no"}<br/>
-        Queenside Castling {queenSideCastling===true?"yes":"no"}<br/>
-        Chance {isChance===true?"yes":"no"}
             <div id="board">
                 {tiles}
                 <PawnPromotionPrompt isOpen={askPawnPromotionPrompt} setPrompt={setPrompt} index={pawnPromotionIndex} setBoard={setState}  emitPromotionMessage={emitPromotionMessage}/>

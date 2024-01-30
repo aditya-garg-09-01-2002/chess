@@ -1,5 +1,7 @@
-function inCheck({index,board,to,piece})
+function inCheck({index,board,to,piece,from})
 {
+    if(typeof(from)!=='undefined')
+        board[from].isOccupied=false
     if(typeof(to)!=='undefined')
     {
         board[to].isOccupied=true;

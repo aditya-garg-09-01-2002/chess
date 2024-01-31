@@ -9,7 +9,7 @@ import io from "socket.io-client"
 import { inCheck} from "../../utils/check";
 import { checkKingSideCastling, checkQueenSideCastling } from "../../utils/castling";
 
-export default function Board({setCheck,setCheckMate,setChance}){
+export default function Board({setCheck,setCheckMate,setChance,setKingSideCastling,setQueenSideCastling}){
     const [askPawnPromotionPrompt, setPrompt] = useState(false);
     const [pawnPromotionIndex,setIndex]=useState(null);
     const intialState=initialSetting()
@@ -83,6 +83,14 @@ export default function Board({setCheck,setCheckMate,setChance}){
         socketRef.current.emit('mychance')
         socketRef.current.on('opponent-move',({from,to,piece})=>{
             setChance(true)
+            if(checkKingSideCastling({board:state,to,from,piece}))
+                setKingSideCastling(true)
+            else 
+                setKingSideCastling(false)
+            if(checkQueenSideCastling({board:state,to,from,piece}))
+                setQueenSideCastling(true)
+            else 
+                setQueenSideCastling(false)
             if(state[to].piece==="king"&&state[to].isOccupied===true&&state[to].color==="white")
                 setCheckMate(true)
             if(inCheck({index:kingPosition,board:state,piece,to,from}))

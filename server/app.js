@@ -30,6 +30,7 @@ io.on('connection',socket=>{
             socket.emit('your-chance-false')
     })
     socket.on('have-moved',({from,to,piece})=>{
+        socket.emit('check-status')
         players[socket.id].isChance=false;
         const otherPlayerID=Object.keys(players).find(id=>id!==socket.id);
         players[otherPlayerID].isChance=true;

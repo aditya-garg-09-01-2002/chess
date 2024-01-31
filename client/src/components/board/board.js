@@ -7,7 +7,7 @@ import { moveFromTo, moveOpponent, promotePawnTo } from "../../utils/moves";
 import PawnPromotionPrompt from "./prompt";
 import io from "socket.io-client"
 import { inCheck} from "../../utils/check";
-import { checkKingSideCastling, checkQueenSideCastling } from "../../utils/castling";
+import {setCastling} from "../../utils/castling";
 
 export default function Board({setCheck,setCheckMate,setChance,setKingSideCastling,setQueenSideCastling}){
     const [askPawnPromotionPrompt, setPrompt] = useState(false);
@@ -18,7 +18,6 @@ export default function Board({setCheck,setCheckMate,setChance,setKingSideCastli
     const [tiles,setTiles]=useState();
     const socketRef=useRef(null)
     let kingPosition=60;
-    let kingSideCastling=false,queenSideCastling=false;
     let otherSelected=[]
     
     async function isMyChance(){
@@ -83,14 +82,7 @@ export default function Board({setCheck,setCheckMate,setChance,setKingSideCastli
         socketRef.current.emit('mychance')
         socketRef.current.on('opponent-move',({from,to,piece})=>{
             setChance(true)
-            if(checkKingSideCastling({board:state,to,from,piece}))
-                setKingSideCastling(true)
-            else 
-                setKingSideCastling(false)
-            if(checkQueenSideCastling({board:state,to,from,piece}))
-                setQueenSideCastling(true)
-            else 
-                setQueenSideCastling(false)
+            setCastling({setKingSideCastling,setQueenSideCastling,state,from,to,piece})
             if(state[to].piece==="king"&&state[to].isOccupied===true&&state[to].color==="white")
                 setCheckMate(true)
             if(inCheck({index:kingPosition,board:state,piece,to,from}))

@@ -35,4 +35,17 @@ function checkQueenSideCastling({board,from,to,piece})
     return false;
 }
 
-export {checkKingSideCastling,checkQueenSideCastling}
+function setCastling({setKingSideCastling,setQueenSideCastling,state,to,from,piece})
+{
+    if(checkKingSideCastling({board:state,to,from,piece}))
+        setKingSideCastling(true)
+    else 
+        setKingSideCastling(false)
+
+    if(checkQueenSideCastling({board:state,to,from,piece}))
+        setQueenSideCastling(true)
+    else 
+        setQueenSideCastling(false)
+}
+
+export {checkKingSideCastling,checkQueenSideCastling,setCastling}

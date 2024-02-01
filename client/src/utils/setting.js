@@ -31,11 +31,11 @@ const initialSetting = ()=>{
 }
 
 
-const tileSetting=(state,Tile,tilesRef,selectInd,moveTo,isMyChance)=>{
+const tileSetting=(state,Tile,tilesRef,selectInd,moveTo,isMyChance,isMobilePortrait)=>{
     const tiles=[]
     state.forEach((statei,index)=>{
         tiles.push(
-            <Tile isMyChance={isMyChance} ref={tilesRef[index]} select={selectInd} index={index} key={index} isSelected={false} isOccupied={statei.isOccupied} isEven={(Math.floor(index/8)+index%8)%2===1?true:false} piece={statei.piece} color={statei.color} moveTo={moveTo} />
+            <Tile isMyChance={isMyChance} isMobilePortrait={isMobilePortrait} ref={tilesRef[index]} select={selectInd} index={index} key={index} isSelected={false} isOccupied={statei.isOccupied} isEven={(Math.floor(index/8)+index%8)%2===1?true:false} piece={statei.piece} color={statei.color} moveTo={moveTo} />
         )
     })
     return tiles;

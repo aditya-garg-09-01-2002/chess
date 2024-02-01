@@ -6,9 +6,19 @@
     border:black solid 10px;
     flex-wrap: wrap;
     display: flex;
-
 }
-.tile{
+#board-mobile{
+    width:100dvw;
+    height:60dvh;
+    margin-top: 10dvh;
+    background-color: rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    border: black solid 3px;
+    flex-wrap: wrap;
+    display: flex;
+}
+
+.tile,.tile-mobile{
     height:12.5%;
     width:12.5%;
     box-sizing: border-box;
@@ -19,12 +29,18 @@
     align-content: center;
 }
 
+.tile-mobile{
+    padding:3px;
+}
 .tile-hovered{
     border:black solid 2px;
 }
 
 .tile-selected{
     border:black solid 4px;
+}
+.tile-selected-mobile{
+    border:black solid 2px;
 }
 
 .pieces{

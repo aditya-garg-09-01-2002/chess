@@ -9,7 +9,7 @@ import io from "socket.io-client"
 import { inCheck} from "../../utils/check";
 import {setCastling} from "../../utils/castling";
 
-export default function Board({setWinner,setCheck,setCheckMate,setChance,setKingSideCastling,setQueenSideCastling,doKingSideCastling,doQueenSideCastling,setDoKingSideCastling,setDoQueenSideCastling}){
+export default function Board({isMobilePortrait,setWinner,setCheck,setCheckMate,setChance,setKingSideCastling,setQueenSideCastling,doKingSideCastling,doQueenSideCastling,setDoKingSideCastling,setDoQueenSideCastling}){
     const [askPawnPromotionPrompt, setPrompt] = useState(false);
     const [pawnPromotionIndex,setIndex]=useState(null);
     const intialState=initialSetting()
@@ -22,6 +22,7 @@ export default function Board({setWinner,setCheck,setCheckMate,setChance,setKing
     let otherSelected=[]
     
     async function isMyChance(){
+        return true;
         socketRef.current.emit('mychance')
         const response= new Promise(resolve=>{
             socketRef.current.on('your-chance-true',()=>{
@@ -67,7 +68,7 @@ export default function Board({setWinner,setCheck,setCheckMate,setChance,setKing
 
     function selectInd(index){
         deselectInd()
-        const highlighted=select(index,tilesRef,state)
+        const highlighted=select(index,tilesRef,state,isMobilePortrait)
         otherSelected=highlighted
     }
 
@@ -153,11 +154,15 @@ export default function Board({setWinner,setCheck,setCheckMate,setChance,setKing
     },[])
     useEffect(()=>{
         if(state)
-            setTiles(tileSetting(state,Tile,tilesRef,selectInd,moveTo,isMyChance))
+            setTiles(tileSetting(state,Tile,tilesRef,selectInd,moveTo,isMyChance,isMobilePortrait))
     },[state])
     return (
         <>
-            <div id="board">
+            <div id={
+                isMobilePortrait?
+                    "board-mobile":
+                    "board"
+            }>
                 {tiles}
                 <PawnPromotionPrompt isOpen={askPawnPromotionPrompt} setPrompt={setPrompt} index={pawnPromotionIndex} setBoard={setState}  emitPromotionMessage={emitPromotionMessage}/>
             </div>

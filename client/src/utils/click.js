@@ -1,5 +1,5 @@
 import { getPossibleMoves } from "./moves"
-function select(index,TilesRef,board){
+function select(index,TilesRef,board,isMobilePortrait){
     if(board[index].isOccupied===true&&board[index].color==="white")
     {
         let moves=[index];
@@ -28,7 +28,11 @@ function select(index,TilesRef,board){
         {
             moves=moves.concat(getPossibleMoves("king",index,board))
         }
-        moves.forEach((i)=>TilesRef[i].current.classList.add('tile-selected'))
+        moves.forEach((i)=>{
+            TilesRef[i].current.classList.add('tile-selected')
+            if(isMobilePortrait===true)
+                TilesRef[i].current.classList.add('tile-selected-mobile')
+        })
         moves.forEach((ind,index)=>{
             if(index!=0)
             {
@@ -46,6 +50,7 @@ function deselect(TilesRef,otherSelected,board)
     otherSelected.forEach((ind)=>{
         board[ind].canMoveTo=false;
         TilesRef[ind].current.classList.remove('tile-selected')
+        TilesRef[ind].current.classList.remove('tile-selected-mobile')
     });
     return board;
 }

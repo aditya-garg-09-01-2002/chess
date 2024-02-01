@@ -76,7 +76,7 @@ function getPossibleMovesPawn(index,board)
     let row=Math.floor(index/8);
     let col=index%8;
     const moves=[];
-    if(board[index].moved===false&&board[(row-2)*8+col].isOccupied===false)
+    if(board[index].moved===false&&board[(row-2)*8+col].isOccupied===false&&board[(row-1)*8+col].isOccupied===false)
         moves.push((row-2)*8+col);
     if(row>0&&col+1<8&&board[(row-1)*8+(col+1)].isOccupied&&board[(row-1)*8+(col+1)].color==="black"&&board[(row-1)*8+(col+1)].piece!="king")
     {
@@ -257,12 +257,6 @@ function getPossibleMovesKing(index,board)
     if(col<7)
         if(board[row*8+col+1].isOccupied===false||board[row*8+col+1].color==="black")
             moves.push(row*8+col+1);
-    
-    //castling
-    if(board[index].moved===false)
-    {
-        
-    }
 
     return moves;
 
@@ -290,4 +284,4 @@ function getPossibleMoves(piece,index,board)
         
 }
 
-export {getPossibleMoves,moveFromTo,promotePawnTo,moveOpponent,castleMe}
+export {getPossibleMoves,moveFromTo,promotePawnTo,moveOpponent,castleMe,castleOpponent}

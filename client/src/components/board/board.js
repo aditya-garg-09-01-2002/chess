@@ -3,19 +3,20 @@ import "./board.css"
 import {Tile} from "./tile"
 import { initialSetting,tileSetting } from "../../utils/setting";
 import {select,deselect} from "../../utils/click"
-import { moveFromTo, moveOpponent, promotePawnTo } from "../../utils/moves";
+import { moveFromTo, moveOpponent, promotePawnTo,castleMe,castleOpponent } from "../../utils/moves";
 import PawnPromotionPrompt from "./prompt";
 import io from "socket.io-client"
 import { inCheck} from "../../utils/check";
 import {setCastling} from "../../utils/castling";
 
-export default function Board({setCheck,setCheckMate,setChance,setKingSideCastling,setQueenSideCastling}){
+export default function Board({setWinner,setCheck,setCheckMate,setChance,setKingSideCastling,setQueenSideCastling,doKingSideCastling,doQueenSideCastling,setDoKingSideCastling,setDoQueenSideCastling}){
     const [askPawnPromotionPrompt, setPrompt] = useState(false);
     const [pawnPromotionIndex,setIndex]=useState(null);
     const intialState=initialSetting()
     const [state,setState]=useState(intialState);
     const tilesRef=Array.from({length:64},()=>React.createRef())
     const [tiles,setTiles]=useState();
+    let castlingDone=false;
     const socketRef=useRef(null)
     let kingPosition=60;
     let otherSelected=[]
@@ -77,14 +78,63 @@ export default function Board({setCheck,setCheckMate,setChance,setKingSideCastli
         otherSelected=[]
     }
 
+    function doCastling({side})
+    {
+        const kingDest=((side==="king")?62:58);
+        kingPosition=kingDest;
+        castleMe({side,setBoard:setState})
+        castlingDone=true;
+        socketRef.current.emit('have-castled',{side:side})
+    }
+    useEffect(()=>{
+        (async()=>{
+            if(doKingSideCastling===true)
+            {
+                if(await isMyChance())
+                {
+                    setChance(false)
+                    doCastling({side:"king"});
+                }   
+                setDoKingSideCastling(false);
+            }
+        })()
+    },[doKingSideCastling])
+    
+    useEffect(()=>{
+        (async()=>{
+            if(doQueenSideCastling===true)
+            {
+                if(await isMyChance())
+                {
+                    setChance(false)
+                    doCastling({side:"queen"});
+                }   
+                setDoQueenSideCastling(false);
+            }
+        })()
+    },[doQueenSideCastling])
+
     useEffect(()=>{
         socketRef.current=io('http://localhost:9000/')
         socketRef.current.emit('mychance')
+        socketRef.current.on('you-won',()=>{
+            setCheckMate(true)
+            setWinner(true)
+        })
+        socketRef.current.on('castle-opponent',({side})=>{
+            setChance(true)
+            kingPosition=((side==="king")?6:2);
+            castleOpponent({side,setBoard:setState})
+        })
         socketRef.current.on('opponent-move',({from,to,piece})=>{
             setChance(true)
-            setCastling({setKingSideCastling,setQueenSideCastling,state,from,to,piece})
+            if(castlingDone===false)
+                setCastling({setKingSideCastling,setQueenSideCastling,state,from,to,piece})
             if(state[to].piece==="king"&&state[to].isOccupied===true&&state[to].color==="white")
+            {
+                socketRef.current.emit('check-mate')
                 setCheckMate(true)
+            }
             if(inCheck({index:kingPosition,board:state,piece,to,from}))
                 setCheck(true)
             else

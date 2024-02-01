@@ -21,6 +21,31 @@ function moveFromTo({from,to,target,deselect,setBoard})
     return false;
 }
 
+function castleOpponent({side,setBoard})
+{
+    const rookInitial=((side==="king")?7:0);
+    const rookDest=((side==="king")?5:3);
+    const kingDest=((side==="king")?6:2);
+    setBoard((oldBoard)=>{
+        const board=[...oldBoard]
+        board[rookDest].piece="rook"
+        board[rookDest].isOccupied=true
+        board[rookDest].color="black"
+        board[rookDest].moved=true;
+        board[rookInitial].color=null
+        board[rookInitial].isOccupied=false;
+        board[rookInitial].piece=null
+        board[kingDest].piece="king"
+        board[kingDest].isOccupied=true
+        board[kingDest].color="black"
+        board[kingDest].moved=true;
+        board[4].color=null
+        board[4].isOccupied=false;
+        board[4].piece=null
+        return board
+    })
+}
+
 function castleMe({side,setBoard})
 {
     const rookInitial=((side==="king")?63:56);

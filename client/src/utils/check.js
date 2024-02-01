@@ -119,7 +119,8 @@ function inCheckByBishop({index,board})
     let flag1=true,flag2=true,flag3=true,flag4=true;
     for(let i=1;i<8;i++)
     {
-        if(index-7*i>-1)
+        let row=Math.floor(index/8),col=index%8
+        if(row-i>-1&&col+i<8)
         {
             if(board[index-7*i].isOccupied===true)
             {
@@ -129,7 +130,7 @@ function inCheckByBishop({index,board})
                     flag1=false;
             }
         }
-        if(index-9*i>-1)
+        if(row-i>-1&&col-i>-1)
         {            
             if(board[index-9*i].isOccupied===true)
             {
@@ -139,7 +140,7 @@ function inCheckByBishop({index,board})
                     flag2=false;
             }
         }
-        if(index+7*i<64)
+        if(row+i<8&&col-i>-1)
         {
             if(board[index+7*i].isOccupied===true)
             {
@@ -149,7 +150,7 @@ function inCheckByBishop({index,board})
                     flag3=false;
             }
         }
-        if(index+9*i<64)
+        if(row+i<8&&col+i<8)
         {
             if(board[index+9*i].isOccupied===true)
             {

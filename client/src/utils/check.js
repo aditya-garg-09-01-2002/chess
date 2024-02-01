@@ -68,7 +68,9 @@ function inCheckByRook({index,board})
     let flag10=true,flag20=true,flag30=true,flag40=true;
     for(let i=1;i<8;i++)
     {
-        if(index-i>-1)
+        let row=Math.floor(index/8);
+        let col=index%8
+        if(col-i>-1)
         {
             if(board[index-i].isOccupied===true)
             {
@@ -78,7 +80,7 @@ function inCheckByRook({index,board})
                     flag10=false;
             }
         }
-        if(index+i<8*Math.floor(index/8)+8)
+        if(col+i<8)
         {
             if(board[index+i].isOccupied===true)
             {
@@ -88,7 +90,7 @@ function inCheckByRook({index,board})
                     flag20=false;
             }
         }
-        if(index-8*i>-1)
+        if(row-i>-1)
         {
             if(board[index-8*i].isOccupied===true)
             {
@@ -98,7 +100,7 @@ function inCheckByRook({index,board})
                     flag30=false;
             }
         }
-        if(index+8*i<64)
+        if(row+i<8)
         {
             if(board[index+8*i].isOccupied===true)
             {

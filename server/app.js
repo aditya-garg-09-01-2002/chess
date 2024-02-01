@@ -29,6 +29,12 @@ io.on('connection',socket=>{
         else 
             socket.emit('your-chance-false')
     })
+    socket.on('have-castled',({side})=>{
+        players[socket.id].isChance=false;
+        const otherPlayerID=Object.keys(players).find(id=>id!==socket.id);
+        players[otherPlayerID].isChance=true;
+        io.to(otherPlayerID).emit('castle-opponent',{side})
+    })
     socket.on('have-moved',({from,to,piece})=>{
         socket.emit('check-status')
         players[socket.id].isChance=false;

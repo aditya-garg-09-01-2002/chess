@@ -18,7 +18,33 @@ function moveFromTo({from,to,target,deselect,setBoard})
         })
         return true;
     }
-    else return false;
+    return false;
+}
+
+function castleMe({side,setBoard})
+{
+    const rookInitial=((side==="king")?63:56);
+    const rookDest=((side==="king")?61:59);
+    const kingDest=((side==="king")?62:58);
+    setBoard((oldBoard)=>{
+        const board=[...oldBoard];
+        board[rookDest].piece="rook"
+        board[rookDest].isOccupied=true
+        board[rookDest].color="white"
+        board[rookDest].moved=true;
+        board[kingDest].piece="king"
+        board[kingDest].isOccupied=true
+        board[kingDest].color="white"
+        board[kingDest].moved=true;
+        board[rookInitial].color=null
+        board[rookInitial].isOccupied=false;
+        board[rookInitial].piece=null
+        board[60].color=null
+        board[60].isOccupied=false;
+        board[60].piece=null
+        console.log(60,board[60])
+        return board;
+    })
 }
 
 function moveOpponent({from,to,piece,setBoard})
@@ -34,7 +60,6 @@ function moveOpponent({from,to,piece,setBoard})
         board[from].piece=null
         return board
     })
-    return true;
 }
 
 
@@ -265,4 +290,4 @@ function getPossibleMoves(piece,index,board)
         
 }
 
-export {getPossibleMoves,moveFromTo,promotePawnTo,moveOpponent,getPossibleMovesKing}
+export {getPossibleMoves,moveFromTo,promotePawnTo,moveOpponent,castleMe}

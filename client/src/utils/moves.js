@@ -67,7 +67,6 @@ function castleMe({side,setBoard})
         board[60].color=null
         board[60].isOccupied=false;
         board[60].piece=null
-        console.log(60,board[60])
         return board;
     })
 }

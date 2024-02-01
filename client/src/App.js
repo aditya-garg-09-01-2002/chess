@@ -4,7 +4,9 @@ import Panel from "./components/panel/panel.js"
 import { useState } from 'react';
 import {useMediaQuery} from "react-responsive"
 function App() {
-  const isMobilePortrait=useMediaQuery({query:'(max-width:768px)',orientation:"portrait"});
+  const isMobile=useMediaQuery({query:'(max-width:768px)'});
+  const isPortrait=useMediaQuery({query:'(orientation:portrait)'});
+  const isMobilePortrait=isMobile&&isPortrait
   const [kingSideCastling,setKingSideCastling]=useState(false)
   const [queenSideCastling,setQueenSideCastling]=useState(false)
   const [isCheck,setCheck]=useState(false)

@@ -22,7 +22,6 @@ export default function Board({isMobilePortrait,setWinner,setCheck,setCheckMate,
     let otherSelected=[]
     
     async function isMyChance(){
-        return true;
         socketRef.current.emit('mychance')
         const response= new Promise(resolve=>{
             socketRef.current.on('your-chance-true',()=>{
@@ -116,7 +115,7 @@ export default function Board({isMobilePortrait,setWinner,setCheck,setCheckMate,
     },[doQueenSideCastling])
 
     useEffect(()=>{
-        socketRef.current=io('http://localhost:9000/')
+        socketRef.current=io(process.env.REACT_APP_BACKEND_URL)
         socketRef.current.emit('mychance')
         socketRef.current.on('you-won',()=>{
             setCheckMate(true)

@@ -115,9 +115,7 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
     },[doQueenSideCastling])
 
     useEffect(()=>{
-        const link=process.env.REACT_APP_BACKEND_URL
         socketRef.current=io(process.env.REACT_APP_BACKEND_URL)
-        console.log(link)
         socketRef.current.on('')
         socketRef.current.on('player-one',()=>setOtherPlayerPresent(true))
         socketRef.current.on('player-two',()=>setOtherPlayerPresent(true))

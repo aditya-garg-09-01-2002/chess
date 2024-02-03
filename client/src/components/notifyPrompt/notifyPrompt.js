@@ -43,7 +43,7 @@ export default function NotifyPrompt({type})
                                 width: "100%", padding:"0 30px", boxSizing:"border-box"
                             }}>
                             {"To Test Kindly Join with"} 
-                            <StyledChessLink href='#' target="_blank" >
+                            <StyledChessLink href='' target="_blank" >
                                 Chess
                             </StyledChessLink> 
                             {"on another tab at the same time"}
@@ -64,7 +64,16 @@ export default function NotifyPrompt({type})
                             <p style={{ 
                                 width: "100%", padding:"0 30px", boxSizing:"border-box"
                             }}>
-                            {"Kindly Reload to start a new match"}
+                            {"Kindly"}
+                            {
+                                <StyledChessLink onClick={(e)=>{
+                                    e.preventDefault();
+                                    window.location.reload();
+                                }}>
+                                    Reload
+                                </StyledChessLink>
+                            }
+                            {"to start a new match"}
                             </p>
                         </div>
                         )

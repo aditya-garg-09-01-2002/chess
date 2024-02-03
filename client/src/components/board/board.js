@@ -9,7 +9,7 @@ import io from "socket.io-client"
 import { inCheck} from "../../utils/check";
 import {setCastling} from "../../utils/castling";
 
-export default function Board({isMobilePortrait,setWinner,setCheck,setCheckMate,setChance,setKingSideCastling,setQueenSideCastling,doKingSideCastling,doQueenSideCastling,setDoKingSideCastling,setDoQueenSideCastling}){
+export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobilePortrait,setWinner,setCheck,setCheckMate,setChance,setKingSideCastling,setQueenSideCastling,doKingSideCastling,doQueenSideCastling,setDoKingSideCastling,setDoQueenSideCastling}){
     const [askPawnPromotionPrompt, setPrompt] = useState(false);
     const [pawnPromotionIndex,setIndex]=useState(null);
     const intialState=initialSetting()
@@ -116,6 +116,10 @@ export default function Board({isMobilePortrait,setWinner,setCheck,setCheckMate,
 
     useEffect(()=>{
         socketRef.current=io(process.env.REACT_APP_BACKEND_URL)
+        socketRef.current.on('')
+        socketRef.current.on('player-one',()=>setOtherPlayerPresent(true))
+        socketRef.current.on('player-two',()=>setOtherPlayerPresent(true))
+        socketRef.current.on('other-player-left',()=>setOtherPlayerLeft(true))
         socketRef.current.emit('mychance')
         socketRef.current.on('you-won',()=>{
             setCheckMate(true)

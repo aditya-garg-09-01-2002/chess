@@ -4,7 +4,7 @@ export const chanceSlice = createSlice({
   initialState:false,
   name: "chance",
   reducers: {
-    updateChance:(state)=>!state
+    updateChance:(state,action)=>action.payload
   }
 })
 

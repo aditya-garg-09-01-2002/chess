@@ -3,10 +3,14 @@ const socketIO=require('socket.io')
 const appConfig=require('./config/setup')
 const cors=require('cors')
 const app=express()
-
+const cron = require('node-cron')
 app.use(cors());
 
 const server=app.listen(appConfig.Port,()=>console.log('connected to server...'))
+
+cron.schedule('*/10 * * * *', () => {
+    console.log('This task runs every 15 minutes as Cron-Job');
+});
 
 const io=socketIO(server,{cors:{}})
 

@@ -6,12 +6,13 @@ import {select,deselect} from "../../utils/click"
 import { moveFromTo, moveOpponent, promotePawnTo,castleMe,castleOpponent } from "../../utils/moves";
 import PawnPromotionPrompt from "./prompt";
 import io from "socket.io-client"
-import { inCheck} from "../../utils/check";
+import { setCheck} from "../../utils/check";
 import {setCastling} from "../../utils/castling";
 import { updateChance } from "../../redux/slices/chance";
+import { updateCheck } from "../../redux/slices/check";
 import {useDispatch,useSelector} from "react-redux"
 
-export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobilePortrait,setWinner,setCheck,setCheckMate,setKingSideCastling,setQueenSideCastling,doKingSideCastling,doQueenSideCastling,setDoKingSideCastling,setDoQueenSideCastling}){
+export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobilePortrait,setWinner,setCheckMate,setKingSideCastling,setQueenSideCastling,doKingSideCastling,doQueenSideCastling,setDoKingSideCastling,setDoQueenSideCastling}){
     const [askPawnPromotionPrompt, setPrompt] = useState(false);
     const [pawnPromotionIndex,setIndex]=useState(null);
     const intialState=initialSetting()
@@ -42,12 +43,9 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
             setPrompt(true)
         }
         socketRef.current.on('check-status',()=>{
-            if(inCheck({index:kingPosition,board:state}))
-                setCheck(true)
-            else 
-                setCheck(false)
+            setCheck({index:kingPosition,board:state,dispatch:(state)=>dispatch(updateCheck(state))})
         })
-        dispatch(updateChance())
+        dispatch(updateChance(false))
 
         //rest processing will happening from prompt itself
         return true;
@@ -84,7 +82,7 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
             {
                 if(chance)
                 {
-                    dispatch(updateChance())
+                    dispatch(updateChance(false))
                     doCastling({side:"king"});
                 }   
                 setDoKingSideCastling(false);
@@ -98,7 +96,7 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
             {
                 if(chance)
                 {
-                    dispatch(updateChance())
+                    dispatch(updateChance(false))
                     doCastling({side:"queen"});
                 }   
                 setDoQueenSideCastling(false);
@@ -108,7 +106,6 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
 
     useEffect(()=>{
         socketRef.current=io(process.env.REACT_APP_BACKEND_URL)
-        socketRef.current.on('')
         socketRef.current.on('player-matched',()=>setOtherPlayerPresent(true))
         socketRef.current.on('other-player-left',()=>setOtherPlayerLeft(true))
         socketRef.current.on('you-won',()=>{
@@ -116,12 +113,12 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
             setWinner(true)
         })
         socketRef.current.on('castle-opponent',({side})=>{
-            dispatch(updateChance())
+            dispatch(updateChance(true))
             kingPosition=((side==="king")?6:2);
             castleOpponent({side,setBoard:setState})
         })
         socketRef.current.on('opponent-move',({from,to,piece})=>{
-            dispatch(updateChance())
+            dispatch(updateChance(true))
             if(castlingDone===false)
                 setCastling({setKingSideCastling,setQueenSideCastling,state,from,to,piece})
             if(state[to].piece==="king"&&state[to].isOccupied===true&&state[to].color==="white")
@@ -129,14 +126,11 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
                 socketRef.current.emit('check-mate')
                 setCheckMate(true)
             }
-            if(inCheck({index:kingPosition,board:state,piece,to,from}))
-                setCheck(true)
-            else
-                setCheck(false)
+            setCheck({index:kingPosition,board:state,piece,to,from,dispatch:(state)=>dispatch(updateCheck(state))})
             moveOpponent({from,to,piece,setBoard:setState})
         })
         socketRef.current.on('you-start',()=>{
-            dispatch(updateChance())
+            dispatch(updateChance(true))
         })
         socketRef.current.on('pawn-promotion',({index,piece})=>{
             promotePawnTo(piece,index,setState)

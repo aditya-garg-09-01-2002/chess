@@ -13,9 +13,12 @@ const StyledChessLink = styled.a`
         background-color:rgba(255,255,255,0.5);
     }
 `;
-export default function Panel({isMobilePortrait,isWinner,kingSideCastling,queenSideCastling,isCheckMate,setDoKingSideCastling,setDoQueenSideCastling}){
+export default function Panel({isMobilePortrait,isWinner,isCheckMate,setDoKingSideCastling,setDoQueenSideCastling}){
     const isChance=useSelector((state)=>state.chance)
     const isCheck=useSelector((state)=>state.check)
+    const castling=useSelector((state)=>state.castling)
+    const {kingSideCastling,queenSideCastling}=castling
+
     return (
         <>
             <div id={

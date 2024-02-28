@@ -13,8 +13,6 @@ function App() {
   const [otherPlayerPresent,setOtherPlayerPresent]=useState(false);
   const [otherPlayerLeft,setOtherPlayerLeft]=useState(false); 
   const isMobilePortrait=isMobile&&isPortrait
-  const [kingSideCastling,setKingSideCastling]=useState(false)
-  const [queenSideCastling,setQueenSideCastling]=useState(false)
   const [isCheckMate,setCheckMate]=useState(false)
   const [doKingSideCastling,setDoKingSideCastling]=useState(false)
   const [doQueenSideCastling,setDoQueenSideCastling]=useState(false)
@@ -40,8 +38,6 @@ function App() {
           setOtherPlayerPresent={(value)=>setOtherPlayerPresent(value)}
           isMobilePortrait={isMobilePortrait}
           setWinner={value=>setWinner(value)}
-          setKingSideCastling={value=>setKingSideCastling(value)} 
-          setQueenSideCastling={value=>setQueenSideCastling(value)} 
           setCheckMate={value=>setCheckMate(value)}
           doKingSideCastling={doKingSideCastling}
           doQueenSideCastling={doQueenSideCastling}
@@ -50,7 +46,7 @@ function App() {
           />
         {
           otherPlayerPresent&&otherPlayerLeft===false?
-          <Panel isMobilePortrait={isMobilePortrait} isWinner={winner} kingSideCastling={kingSideCastling} queenSideCastling={queenSideCastling} isCheckMate={isCheckMate} setDoKingSideCastling={setDoKingSideCastling} setDoQueenSideCastling={setDoQueenSideCastling}/>
+          <Panel isMobilePortrait={isMobilePortrait} isWinner={winner} isCheckMate={isCheckMate} setDoKingSideCastling={setDoKingSideCastling} setDoQueenSideCastling={setDoQueenSideCastling}/>
           :""
         }
       </div >

@@ -11,8 +11,9 @@ import {setCastling} from "../../utils/castling";
 import { updateChance } from "../../redux/slices/chance";
 import { updateCheck } from "../../redux/slices/check";
 import {useDispatch,useSelector} from "react-redux"
+import { kingSide,queenSide } from "../../redux/slices/castling";
 
-export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobilePortrait,setWinner,setCheckMate,setKingSideCastling,setQueenSideCastling,doKingSideCastling,doQueenSideCastling,setDoKingSideCastling,setDoQueenSideCastling}){
+export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobilePortrait,setWinner,setCheckMate,doKingSideCastling,doQueenSideCastling,setDoKingSideCastling,setDoQueenSideCastling}){
     const [askPawnPromotionPrompt, setPrompt] = useState(false);
     const [pawnPromotionIndex,setIndex]=useState(null);
     const intialState=initialSetting()
@@ -120,7 +121,7 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
         socketRef.current.on('opponent-move',({from,to,piece})=>{
             dispatch(updateChance(true))
             if(castlingDone===false)
-                setCastling({setKingSideCastling,setQueenSideCastling,state,from,to,piece})
+                setCastling({setKingSideCastling:(state)=>dispatch(kingSide(state)),setQueenSideCastling:(state)=>dispatch(queenSide(state)),state,from,to,piece})
             if(state[to].piece==="king"&&state[to].isOccupied===true&&state[to].color==="white")
             {
                 socketRef.current.emit('check-mate')

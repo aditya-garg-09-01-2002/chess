@@ -13,8 +13,9 @@ const StyledChessLink = styled.a`
         background-color:rgba(255,255,255,0.5);
     }
 `;
-export default function Panel({isMobilePortrait,isWinner,kingSideCastling,queenSideCastling,isCheck,isCheckMate,setDoKingSideCastling,setDoQueenSideCastling}){
-    const chance=useSelector((state)=>state.chance)
+export default function Panel({isMobilePortrait,isWinner,kingSideCastling,queenSideCastling,isCheckMate,setDoKingSideCastling,setDoQueenSideCastling}){
+    const isChance=useSelector((state)=>state.chance)
+    const isCheck=useSelector((state)=>state.check)
     return (
         <>
             <div id={
@@ -24,7 +25,7 @@ export default function Panel({isMobilePortrait,isWinner,kingSideCastling,queenS
             }>
                 <div id="chance-box">
                     <p>
-                        {chance?"It is your chance":"Waiting for opponent to move"}
+                        {isChance?"It is your chance":"Waiting for opponent to move"}
                     </p>
                 </div>
                 {isCheck?
@@ -78,7 +79,7 @@ export default function Panel({isMobilePortrait,isWinner,kingSideCastling,queenS
                     <div 
                         className="castling-button"
                         onClick={()=>{
-                            if(chance)   
+                            if(isChance)   
                             setDoKingSideCastling(true)
                         }}
                     >
@@ -89,7 +90,7 @@ export default function Panel({isMobilePortrait,isWinner,kingSideCastling,queenS
                     <div 
                         className="castling-button"
                         onClick={()=>{
-                            if(chance)   
+                            if(isChance)   
                             setDoQueenSideCastling(true)
                         }}
                     >

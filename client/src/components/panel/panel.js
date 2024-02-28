@@ -1,7 +1,7 @@
 import React from "react";
 import "./panel.css"
 import styled from "styled-components"
-
+import {useSelector} from "react-redux"
 const StyledChessLink = styled.a`
     color: yellow;
     text-decoration: underline;
@@ -13,7 +13,8 @@ const StyledChessLink = styled.a`
         background-color:rgba(255,255,255,0.5);
     }
 `;
-export default function Panel({isMobilePortrait,isWinner,isChance,kingSideCastling,queenSideCastling,isCheck,isCheckMate,setDoKingSideCastling,setDoQueenSideCastling}){
+export default function Panel({isMobilePortrait,isWinner,kingSideCastling,queenSideCastling,isCheck,isCheckMate,setDoKingSideCastling,setDoQueenSideCastling}){
+    const chance=useSelector((state)=>state.chance)
     return (
         <>
             <div id={
@@ -23,7 +24,7 @@ export default function Panel({isMobilePortrait,isWinner,isChance,kingSideCastli
             }>
                 <div id="chance-box">
                     <p>
-                        {isChance?"It is your chance":"Waiting for opponent to move"}
+                        {chance?"It is your chance":"Waiting for opponent to move"}
                     </p>
                 </div>
                 {isCheck?
@@ -77,7 +78,7 @@ export default function Panel({isMobilePortrait,isWinner,isChance,kingSideCastli
                     <div 
                         className="castling-button"
                         onClick={()=>{
-                            if(isChance)   
+                            if(chance)   
                             setDoKingSideCastling(true)
                         }}
                     >
@@ -88,7 +89,7 @@ export default function Panel({isMobilePortrait,isWinner,isChance,kingSideCastli
                     <div 
                         className="castling-button"
                         onClick={()=>{
-                            if(isChance)   
+                            if(chance)   
                             setDoQueenSideCastling(true)
                         }}
                     >

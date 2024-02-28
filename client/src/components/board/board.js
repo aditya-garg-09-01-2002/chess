@@ -9,7 +9,7 @@ import io from "socket.io-client"
 import { inCheck} from "../../utils/check";
 import {setCastling} from "../../utils/castling";
 import { updateChance } from "../../redux/slices/chance";
-import {useDispatch} from "react-redux"
+import {useDispatch,useSelector} from "react-redux"
 
 export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobilePortrait,setWinner,setCheck,setCheckMate,setKingSideCastling,setQueenSideCastling,doKingSideCastling,doQueenSideCastling,setDoKingSideCastling,setDoQueenSideCastling}){
     const [askPawnPromotionPrompt, setPrompt] = useState(false);
@@ -24,21 +24,7 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
     let otherSelected=[]
     
     const dispatch=useDispatch()
-
-
-    async function isMyChance(){
-        socketRef.current.emit('mychance')
-        const response= new Promise(resolve=>{
-            socketRef.current.on('your-chance-true',()=>{
-                resolve(true)
-            })
-            socketRef.current.on('your-chance-false',()=>{
-                resolve(false)
-            })
-        })
-        return response
-    }
-
+    const chance=useSelector((state)=>state.chance)
     
     function moveTo(index){
         if(otherSelected.length===0)
@@ -96,7 +82,7 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
         (async()=>{
             if(doKingSideCastling===true)
             {
-                if(await isMyChance())
+                if(chance)
                 {
                     dispatch(updateChance())
                     doCastling({side:"king"});
@@ -110,7 +96,7 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
         (async()=>{
             if(doQueenSideCastling===true)
             {
-                if(await isMyChance())
+                if(chance)
                 {
                     dispatch(updateChance())
                     doCastling({side:"queen"});
@@ -152,7 +138,7 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
             moveOpponent({from,to,piece,setBoard:setState})
         })
         socketRef.current.on('you-start',()=>{
-            dispatch(updateChance(true))
+            dispatch(updateChance())
         })
         socketRef.current.on('pawn-promotion',({index,piece})=>{
             promotePawnTo(piece,index,setState)
@@ -163,7 +149,7 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
     },[])
     useEffect(()=>{
         if(state)
-            setTiles(tileSetting(state,Tile,tilesRef,selectInd,moveTo,isMyChance,isMobilePortrait))
+            setTiles(tileSetting(state,Tile,tilesRef,selectInd,moveTo,isMobilePortrait))
     },[state])
     return (
         <>

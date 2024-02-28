@@ -111,7 +111,6 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
         socketRef.current.on('')
         socketRef.current.on('player-matched',()=>setOtherPlayerPresent(true))
         socketRef.current.on('other-player-left',()=>setOtherPlayerLeft(true))
-        socketRef.current.emit('mychance')
         socketRef.current.on('you-won',()=>{
             setCheckMate(true)
             setWinner(true)

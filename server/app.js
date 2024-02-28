@@ -26,17 +26,6 @@ io.on('connection',socket=>{
         io.to(playerOne).emit('player-matched');
         io.to(playerTwo).emit('player-matched');
     }
-    socket.on('mychance',()=>{
-        if(typeof pairs[socket.id]==='undefined')
-        {
-            socket.emit('wait for other player to join')
-            return ;
-        }
-        if(pairs[socket.id].isChance===true)
-            socket.emit('your-chance-true')
-        else 
-            socket.emit('your-chance-false')
-    })
     socket.on('have-castled',({side})=>{
         pairs[socket.id].isChance=false;
         const otherPlayerID=pairs[socket.id].opponent;

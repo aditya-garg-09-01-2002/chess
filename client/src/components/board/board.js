@@ -109,8 +109,7 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
     useEffect(()=>{
         socketRef.current=io(process.env.REACT_APP_BACKEND_URL)
         socketRef.current.on('')
-        socketRef.current.on('player-one',()=>setOtherPlayerPresent(true))
-        socketRef.current.on('player-two',()=>setOtherPlayerPresent(true))
+        socketRef.current.on('player-matched',()=>setOtherPlayerPresent(true))
         socketRef.current.on('other-player-left',()=>setOtherPlayerLeft(true))
         socketRef.current.emit('mychance')
         socketRef.current.on('you-won',()=>{

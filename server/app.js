@@ -23,8 +23,8 @@ io.on('connection',socket=>{
         pairs[playerOne]={opponent:playerTwo,isChance:true}
         pairs[playerTwo]={opponent:playerOne,isChance:false}
         io.to(playerOne).emit('you-start')
-        io.to(playerOne).emit('player-one');
-        io.to(playerTwo).emit('player-two');
+        io.to(playerOne).emit('player-matched');
+        io.to(playerTwo).emit('player-matched');
     }
     socket.on('mychance',()=>{
         if(typeof pairs[socket.id]==='undefined')

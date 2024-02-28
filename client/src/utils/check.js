@@ -21,6 +21,15 @@ function inCheck({index,board,to,piece,from})
         return true;
     return false;
 }
+
+function setCheck({index,board,to,piece,from,dispatch})
+{
+    if(inCheck({index,board,to,piece,from}))
+        dispatch(true)
+    else    
+        dispatch(false)
+}
+
 function inCheckByPawn({index,board})
 {
     for(let i=-1;i<2;i++)
@@ -169,4 +178,4 @@ function inCheckByQueen({index,board})
 {
     return (inCheckByBishop({index,board})||inCheckByRook({index,board}))
 }
-export {inCheck}
+export {inCheck,setCheck}

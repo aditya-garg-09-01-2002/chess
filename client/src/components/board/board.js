@@ -8,8 +8,10 @@ import PawnPromotionPrompt from "./prompt";
 import io from "socket.io-client"
 import { inCheck} from "../../utils/check";
 import {setCastling} from "../../utils/castling";
+import { updateChance } from "../../redux/slices/chance";
+import {useDispatch} from "react-redux"
 
-export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobilePortrait,setWinner,setCheck,setCheckMate,setChance,setKingSideCastling,setQueenSideCastling,doKingSideCastling,doQueenSideCastling,setDoKingSideCastling,setDoQueenSideCastling}){
+export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobilePortrait,setWinner,setCheck,setCheckMate,setKingSideCastling,setQueenSideCastling,doKingSideCastling,doQueenSideCastling,setDoKingSideCastling,setDoQueenSideCastling}){
     const [askPawnPromotionPrompt, setPrompt] = useState(false);
     const [pawnPromotionIndex,setIndex]=useState(null);
     const intialState=initialSetting()
@@ -21,6 +23,9 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
     let kingPosition=60;
     let otherSelected=[]
     
+    const dispatch=useDispatch()
+
+
     async function isMyChance(){
         socketRef.current.emit('mychance')
         const response= new Promise(resolve=>{
@@ -56,7 +61,8 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
             else 
                 setCheck(false)
         })
-        setChance(false)
+        dispatch(updateChance())
+
         //rest processing will happening from prompt itself
         return true;
     }
@@ -92,7 +98,7 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
             {
                 if(await isMyChance())
                 {
-                    setChance(false)
+                    dispatch(updateChance())
                     doCastling({side:"king"});
                 }   
                 setDoKingSideCastling(false);
@@ -106,7 +112,7 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
             {
                 if(await isMyChance())
                 {
-                    setChance(false)
+                    dispatch(updateChance())
                     doCastling({side:"queen"});
                 }   
                 setDoQueenSideCastling(false);
@@ -126,12 +132,12 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
             setWinner(true)
         })
         socketRef.current.on('castle-opponent',({side})=>{
-            setChance(true)
+            dispatch(updateChance())
             kingPosition=((side==="king")?6:2);
             castleOpponent({side,setBoard:setState})
         })
         socketRef.current.on('opponent-move',({from,to,piece})=>{
-            setChance(true)
+            dispatch(updateChance())
             if(castlingDone===false)
                 setCastling({setKingSideCastling,setQueenSideCastling,state,from,to,piece})
             if(state[to].piece==="king"&&state[to].isOccupied===true&&state[to].color==="white")
@@ -146,7 +152,7 @@ export default function Board({setOtherPlayerLeft,setOtherPlayerPresent,isMobile
             moveOpponent({from,to,piece,setBoard:setState})
         })
         socketRef.current.on('you-start',()=>{
-            setChance(true)
+            dispatch(updateChance(true))
         })
         socketRef.current.on('pawn-promotion',({index,piece})=>{
             promotePawnTo(piece,index,setState)

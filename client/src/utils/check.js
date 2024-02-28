@@ -25,6 +25,8 @@ function inCheckByPawn({index,board})
 {
     for(let i=-1;i<2;i++)
     {
+        if(i===0)
+            continue;
         const tile=board[index-8+i];
         if(tile.isOccupied===true&&tile.color==="black"&&tile.piece==="pawn")
             return true;

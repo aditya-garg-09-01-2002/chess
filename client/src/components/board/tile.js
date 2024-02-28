@@ -1,7 +1,8 @@
 import React from "react"
 import {Pawn,Rook,King,Knight,Queen,Bishop} from "./pieces"
+import {useSelector} from "react-redux"
 
-const Tile= React.forwardRef(({isOccupied,isEven,piece,color,select,index,moveTo,isMyChance,isMobilePortrait},ref)=>{
+const Tile= React.forwardRef(({isOccupied,isEven,piece,color,select,index,moveTo,isMobilePortrait},ref)=>{
     const pieces={
         pawn: Pawn,
         rook: Rook,
@@ -11,6 +12,7 @@ const Tile= React.forwardRef(({isOccupied,isEven,piece,color,select,index,moveTo
         king: King,
     };
     const Piece=pieces[piece];
+    const chance=useSelector((state)=>state.chance)
     return (
         <>
             <div ref={ref} 
@@ -20,7 +22,7 @@ const Tile= React.forwardRef(({isOccupied,isEven,piece,color,select,index,moveTo
                 style={{backgroundColor:isEven?"green":"brown"}} 
                 onClick={()=>{
                     (async()=>{
-                        if(await isMyChance())
+                        if(chance)
                         {
                             if(moveTo(index)===true)
                                 return;

@@ -8,8 +8,8 @@ app.use(cors());
 
 const server=app.listen(appConfig.Port,()=>console.log('connected to server...'))
 
-cron.schedule('*/10 * * * *', () => {
-    console.log('This task runs every 15 minutes as Cron-Job');
+cron.schedule('*/5 * * * *', () => {
+    console.log('This task runs every 5 minutes as Cron-Job');
 });
 
 const io=socketIO(server,{cors:{}})

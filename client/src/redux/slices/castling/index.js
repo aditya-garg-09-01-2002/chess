@@ -5,11 +5,11 @@ export const castlingSlice = createSlice({
   name: "castling",
   reducers: {
     kingSide:(state,action)=>{
-        state.kingSide=action.payload;
+        state.kingSideCastling=action.payload;
         return state
     },
     queenSide:(state,action)=>{
-        state.queenSide=action.payload;
+        state.queenSideCastling=action.payload;
         return state;
     }
   }

@@ -2,14 +2,15 @@ import React from "react"
 import styled from "styled-components"
 
 const StyledChessLink = styled.a`
-    color: yellow;
-    text-decoration: underline;
-    padding: 0px 5px;
+    color: #D5CEA3;
+    padding: 0px 2.5px;
+    margin:0px 2.5px;
     border-radius:10%;
-
+    
     &:hover {
-        color: green;
-        background-color:rgba(255,255,255,0.5);
+        color: #E5E5CB;
+        text-decoration: underline;
+        background-color:#1A120B;
     }
 `;
 
@@ -18,6 +19,7 @@ export default function NotifyPrompt({type})
     return (
         <>
             <div style={{
+                zIndex:1000,
                 height:"100%" , 
                 width:"100%" , 
                 position:"fixed" ,
@@ -25,9 +27,9 @@ export default function NotifyPrompt({type})
                 flexWrap:"wrap",
                 alignContent:"center",
                 justifyContent:"center",
-                backgroundColor: "rgba(0,0,0,0.4)",
+                backgroundColor: "#3c2a21aa",
                 fontSize:"20px",
-                color:"yellow",
+                color:"#D5CEA3",
                 boxSizing:"border-box",
                 textAlign:"center"
             }}>

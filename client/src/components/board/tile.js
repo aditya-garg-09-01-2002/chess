@@ -19,7 +19,7 @@ const Tile= React.forwardRef(({isOccupied,isEven,piece,color,select,index,moveTo
                 className={
                     "tile" +`${isMobilePortrait?"-mobile":""}`
                 }
-                style={{backgroundColor:isEven?"green":"brown"}} 
+                style={{backgroundColor:isEven?"#3C2A21":"#E5E5CB"}} 
                 onClick={()=>{
                     (async()=>{
                         if(chance)

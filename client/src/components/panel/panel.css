@@ -1,7 +1,7 @@
 #right-pane{
     height:100dvh;
     width:calc(100dvw - 100dvh);
-    background-color: rgba(50,150,30,0.8);
+    background-color: #D5CEA3;
     display:flex;
     flex-direction: column;
     align-items: center;
@@ -14,85 +14,20 @@
     width:100dvw;
     justify-content: center;
 }
-#chance-box{
+#chance-box,.castling-button,#check-box,#check-box-mobile{
     text-wrap: nowrap;
     width:min-content;
     height:min-content;
     padding:10px;
-    background-color: rgba(165,42,42,0.6);
-    border: 4px outset brown;
-    box-shadow:1px 1px 1px 0.2px yellow,
-                -1px -1px 1px 0.2px yellow;   
-    background: radial-gradient(circle, rgba(100,42,42), rgba(165,42,42), rgba(165,42,42,0.9));
-    animation: chance-box-animation 3s linear infinite;
+    border: 4px outset #3C2A21;
+    background-color: #E5E5CB;
     margin:10px;
-    transform: skew(-20deg);
-}
-#chance-box p{
-    padding: 0;
-    margin: 0;
-    transform: skew(20deg);
-    color:yellow;
-    text-shadow: 1px 1px 0.5px rgba(255,255,0,0.5);
-}
-#check-box,#check-box-mobile{
-    margin:10px;
-    color:yellow;
-    text-shadow: 1px 1px 0.5px rgba(255,255,0,0.5),1px 1px 5pxpx white;
-    text-wrap: nowrap;
-    width:min-content;
-    height:min-content;
-    padding:10px;
-    border: 4px outset brown;
-    box-shadow:1px 1px 1px 0.2px yellow,
-                -1px -1px 1px 0.2px yellow;    
     text-align: center;
-    background: linear-gradient(to right, rgba(165,42,42,1), black); 
-    background-size: 200% 100%;
-    animation: check-box-animation 4s linear infinite;
+    color:#1A120B;
+}
+.castling-button:hover{
+    box-shadow: inset 0px 0px 4px #1A120B;
 }
 #check-box-mobile{
     padding:10px 20px;
-}
-@keyframes check-box-animation{
-    0% {
-        background-size: 100% 100%;
-    }
-
-    50% {
-        background-size: 200% 100%;
-    }
-
-    100% {
-        background-size: 100% 100%;
-    }
-}
-@keyframes chance-box-animation {
-    0% {
-        background-size: 100% 100%;
-        background-position: 50% 50%;
-    }
-    50% {
-        background-size: 200% 100%;
-        background-position: 50% 0%;
-    }
-    100% {
-        background-size: 100% 100%;
-        background-position: 50% 50%;
-    }
-}
-
-.castling-button{
-    margin:10px;
-    height:min-content;
-    width:min-content;
-    text-wrap: nowrap;
-    padding:5px;
-    color:yellow;
-    background-color: rgba(120,42,42,0.9);
-    border:2px outset brown;
-}
-.castling-button:hover{
-    background-color:rgba(120,42,42);
-    box-shadow:1px 1px 0.2px yellow,-1px -1px 0.2px yellow;
 }

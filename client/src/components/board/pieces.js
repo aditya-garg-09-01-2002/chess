@@ -4,7 +4,7 @@ import {faChessPawn,faChessRook,faChessBishop,faChessKnight,faChessQueen,faChess
 
 const PieceComponent=(piece,icon,{color})=>{
     return (
-        <FontAwesomeIcon className={"pieces"} icon={icon} style={{color}}/>
+        <FontAwesomeIcon className={"pieces"} icon={icon} style={{color:color==="white"?"#D5CEA3":"#1A120B",filter:`drop-shadow(0px 0px 1px ${color==="white"?"black":"white"})`}}/>
     )
 }
 

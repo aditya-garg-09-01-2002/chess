@@ -3,12 +3,12 @@
     width:100dvw;
     display:flex;
     justify-content:space-around;
-    background-color:rgba(50,150,30,0.8);
+    background-color:#D5CEA3;
 }
 #main-mobile{
     height:100dvh;
     width:100dvw;
     display:flex;
     flex-direction: column;
-    background-color: rgba(50,150,30,0.8);
+    background-color: #D5CEA3;
 }

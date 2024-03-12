@@ -3,14 +3,15 @@ import "./panel.css"
 import styled from "styled-components"
 import {useSelector} from "react-redux"
 const StyledChessLink = styled.a`
-    color: yellow;
-    text-decoration: underline;
-    padding: 0px 5px;
+    color: #D5CEA3;
+    padding: 0px 2.5px;
+    margin:0px 2.5px;
     border-radius:10%;
-
+    
     &:hover {
-        color: green;
-        background-color:rgba(255,255,255,0.5);
+        color: #E5E5CB;
+        text-decoration: underline;
+        background-color:#1A120B;
     }
 `;
 export default function Panel({isMobilePortrait,isWinner,isCheckMate,setDoKingSideCastling,setDoQueenSideCastling}){
@@ -27,9 +28,7 @@ export default function Panel({isMobilePortrait,isWinner,isCheckMate,setDoKingSi
                     "right-pane"
             }>
                 <div id="chance-box">
-                    <p>
-                        {isChance?"It is your chance":"Waiting for opponent to move"}
-                    </p>
+                    {isChance?"It is your chance":"Waiting for opponent to move"}
                 </div>
                 {isCheck?
                     <p id=
@@ -51,14 +50,14 @@ export default function Panel({isMobilePortrait,isWinner,isCheckMate,setDoKingSi
                         left:"0",
                         width:"100%",
                         height:"100%",
-                        backgroundColor:"rgba(0,0,0,0.8)",
+                        backgroundColor:"#3c2a21aa",
                         textAlign:"center",
                         alignItems:"center",
                         justifyContent:"center",
                         alignContent:"center",
                         flexWrap:"wrap",
                         fontSize:"20px",
-                        color:"yellow",
+                        color:"#D5CEA3",
                         boxSizing:"border-box",
                     }}>
                         <p>

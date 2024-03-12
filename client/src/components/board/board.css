@@ -3,7 +3,7 @@
     aspect-ratio: 1/1;
     background-color:rgba(0,0,0,0.1);
     box-sizing: border-box;
-    border:black solid 10px;
+    border:#1A120B solid 10px;
     flex-wrap: wrap;
     display: flex;
 }
@@ -13,7 +13,7 @@
     margin-top: 10dvh;
     background-color: rgba(0,0,0,0.1);
     box-sizing: border-box;
-    border: black solid 3px;
+    border: #1A120B solid 3px;
     flex-wrap: wrap;
     display: flex;
 }
@@ -32,15 +32,16 @@
 .tile-mobile{
     padding:3px;
 }
-.tile-hovered{
-    border:black solid 2px;
+.tile-hovered,.tile-selected{
+    box-shadow:
+    0px 0px 7px #1A120B,inset 0px 0px 7px #1A120B,
+    0px 0px 2px #D5CEA3,inset 0px 0px 2px #D5CEA3;
 }
 
-.tile-selected{
-    border:black solid 4px;
-}
 .tile-selected-mobile{
-    border:black solid 2px;
+    box-shadow:
+    0px 0px 5px #1A120B,inset 0px 0px 5px #1A120B,
+    0px 0px 1px #D5CEA3,inset 0px 0px 1px #D5CEA3;
 }
 
 .pieces{
